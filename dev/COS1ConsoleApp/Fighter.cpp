@@ -9,6 +9,9 @@ Fighter::Fighter(std::string fighterName, int fighterHealth,
     health = fighterHealth;
     attackPower = fighterAttack;
     defense = fighterDefense;
+
+    // NEW: Fighters start without defending
+    isDefending = false;
 }
 
 // NEW: Returns the fighter's name
@@ -63,4 +66,22 @@ bool Fighter::IsDefeated() const
     }
 
     return false;
+}
+
+// NEW: Activates the defensive stance
+void Fighter::Defend()
+{
+    isDefending = true;
+}
+
+// NEW: Returns whether the fighter is defending
+bool Fighter::IsDefending() const
+{
+    return isDefending;
+}
+
+// NEW: Deactivates the defensive stance
+void Fighter::StopDefending()
+{
+    isDefending = false;
 }

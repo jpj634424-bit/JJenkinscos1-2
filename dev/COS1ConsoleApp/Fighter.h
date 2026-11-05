@@ -10,7 +10,11 @@ private:
     int attackPower;
     int defense;
 
+    // NEW: Tracks whether the fighter is defending
+    bool isDefending;
+
 public:
+    // Constructor
     Fighter(std::string fighterName, int fighterHealth,
         int fighterAttack, int fighterDefense);
 
@@ -23,6 +27,15 @@ public:
     // Damage method
     void TakeDamage(int damage);
 
-    // NEW: Check if the fighter has been defeated
+    // Check if defeated
     bool IsDefeated() const;
+
+    // NEW: Activates defensive stance
+    void Defend();
+
+    // NEW: Checks if fighter is defending
+    bool IsDefending() const;
+
+    // NEW: Ends defensive stance
+    void StopDefending();
 };

@@ -1,6 +1,6 @@
 
 #pragma once
-
+#include "Fighter.h"
 class Game
 {
 private:
@@ -18,4 +18,7 @@ public:
 
     // Starts a combat match
     void StartGame();
+
+    // UPDATED: Displays fighter information and combat options
+    void ShowCombatMenu(const Fighter& player, const Fighter& enemy);
 };

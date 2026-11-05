@@ -90,14 +90,66 @@ void Game::StartGame()
             << combat.GetTurnNumber() << "\n";
 
         // Alternate attacks
+
         if (combat.GetTurnNumber() % 2 == 1)
         {
-            combat.Attack(player, enemy);
+            // NEW: Store the player's combat choice
+            std::string action;
+            bool validAction = false;
+
+            // NEW: Ask the player to choose an action
+            while (!validAction)
+            {
+                // UPDATED: Pass both fighters to the combat menu
+                ShowCombatMenu(player, enemy);
+
+                std::getline(std::cin, action);
+
+                // Stop if input is unavailable
+                if (!std::cin)
+                {
+                    std::cout << "\nEnding match.\n";
+                    return;
+                }
+
+
+                if (action == "1" || action == "A" || action == "a")
+                {
+                    // Player attacks the enemy
+                    combat.Attack(player, enemy);
+                    validAction = true;
+                }
+                else if (action == "2" || action == "D" || action == "d")
+                {
+                    // Player activates defensive stance
+                    player.Defend();
+
+                    std::cout << "\n" << player.GetName()
+                        << " takes a defensive stance!\n";
+
+                    validAction = true;
+                }
+                else if (action.empty())
+                {
+                    // NEW: Handle empty input
+                    std::cout << "\nYou must enter a choice.\n";
+                }
+                else
+                {
+                    // NEW: Explain the available choices
+                    std::cout << "\nInvalid choice!\n";
+                    std::cout << "Enter 1 or A to Attack.\n";
+                    std::cout << "Enter 2 or D to Defend.\n";
+                }
+
+            }
         }
         else
         {
+            // Computer attacks automatically
             combat.Attack(enemy, player);
         }
+
 
         std::cout << "\n";
 
@@ -121,5 +173,31 @@ void Game::StartGame()
     }
 
     std::cout << "\nReturning to main menu...\n";
+}
+
+
+
+
+void Game::ShowCombatMenu(const Fighter& player, const Fighter& enemy)
+{
+    std::cout << "\n";
+    std::cout << "================================\n";
+    std::cout << "           YOUR TURN            \n";
+    std::cout << "================================\n";
+
+    // NEW: Display fighter health
+    std::cout << player.GetName() << " HP: "
+        << player.GetHealth() << "\n";
+
+    std::cout << enemy.GetName() << " HP: "
+        << enemy.GetHealth() << "\n";
+
+    std::cout << "================================\n";
+
+    // Combat actions
+    std::cout << "1. Attack (A)\n";
+    std::cout << "2. Defend (D)\n";
+    std::cout << "================================\n";
+    std::cout << "Enter your choice: ";
 }
 

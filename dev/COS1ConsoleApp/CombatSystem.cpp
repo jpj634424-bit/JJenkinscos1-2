@@ -8,7 +8,7 @@ CombatSystem::CombatSystem()
     turnNumber = 1;
 }
 
-// NEW: Handles an attack between two fighters
+
 void CombatSystem::Attack(Fighter& attacker, Fighter& defender)
 {
     // Calculate damage
@@ -18,6 +18,19 @@ void CombatSystem::Attack(Fighter& attacker, Fighter& defender)
     if (damage < 0)
     {
         damage = 0;
+    }
+
+    // NEW: Check whether the defender is defending
+    if (defender.IsDefending())
+    {
+        // Reduce incoming damage by 50%
+        damage = damage / 2;
+
+        std::cout << defender.GetName()
+            << " is defending! Damage is reduced!\n";
+
+        // Defensive stance ends after this attack
+        defender.StopDefending();
     }
 
     // Apply damage to the defender
@@ -31,8 +44,10 @@ void CombatSystem::Attack(Fighter& attacker, Fighter& defender)
         << damage << " damage!\n";
 
     std::cout << defender.GetName() << " has "
-        << defender.GetHealth() << " health remaining.\n";
+        << defender.GetHealth()
+        << " health remaining.\n";
 }
+
 
 // NEW: Returns the current turn number
 int CombatSystem::GetTurnNumber() const
