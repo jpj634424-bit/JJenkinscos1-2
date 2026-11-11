@@ -45,6 +45,16 @@ void Game::Run()
             break;
         }
 
+        
+            // Check if the player entered nothing
+            if (choice.empty())
+            {
+                std::cout << "\nYou did not enter a choice.\n";
+                std::cout << "Please enter 1, 2, or 3.\n";
+                continue;
+            }
+        
+
         // Process the player's selection
         if (choice == "1")
         {
@@ -65,7 +75,8 @@ void Game::Run()
         }
         else
         {
-            std::cout << "\nInvalid choice. Please try again.\n";
+            std::cout << "\nInvalid choice: " << choice << "\n";
+            std::cout << "Please enter 1, 2, or 3.\n";
         }
     }
 }
