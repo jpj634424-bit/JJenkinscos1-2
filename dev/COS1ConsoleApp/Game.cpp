@@ -45,12 +45,71 @@ void Game::Run()
             break;
         }
 
-        // Process the player's selection
-        if (choice == "1")
-        {
-            // NEW: Start an actual combat match
-            StartGame();
-        }
+        
+            // Check if the player entered nothing
+            if (choice.empty())
+            {
+                std::cout << "\nYou did not enter a choice.\n";
+                std::cout << "Please enter 1, 2, or 3.\n";
+                continue;
+            }
+        
+
+            if (choice == "1")
+            {
+                // NEW: Allow players to replay battles
+                bool playAgain = true;
+
+                while (playAgain && isRunning)
+                {
+                    StartGame();
+
+                    // Stop if input is unavailable
+                    if (!std::cin)
+                    {
+                        isRunning = false;
+                        break;
+                    }
+
+                    std::string replayChoice;
+
+                    // Ask until the player enters a valid option
+                    while (true)
+                    {
+                        std::cout << "\n=== BATTLE COMPLETE ===\n";
+                        std::cout << "Would you like to fight again?\n";
+                        std::cout << "1. Play Again\n";
+                        std::cout << "2. Return to Main Menu\n";
+                        std::cout << "Enter your choice: ";
+
+                        std::getline(std::cin, replayChoice);
+
+                        if (!std::cin)
+                        {
+                            isRunning = false;
+                            playAgain = false;
+                            break;
+                        }
+
+                        if (replayChoice == "1")
+                        {
+                            // Start another battle
+                            break;
+                        }
+                        else if (replayChoice == "2")
+                        {
+                            // Stop replaying battles
+                            playAgain = false;
+                            break;
+                        }
+                        else
+                        {
+                            std::cout << "\nInvalid choice! Enter 1 or 2.\n";
+                        }
+                    }
+                }
+            }
+
         else if (choice == "2")
         {
             std::cout << "\n=== HOW TO PLAY ===\n";
@@ -65,7 +124,8 @@ void Game::Run()
         }
         else
         {
-            std::cout << "\nInvalid choice. Please try again.\n";
+            std::cout << "\nInvalid choice: " << choice << "\n";
+            std::cout << "Please enter 1, 2, or 3.\n";
         }
     }
 }
@@ -73,6 +133,15 @@ void Game::Run()
 // NEW: Starts a combat match
 void Game::StartGame()
 {
+    // Display battle instructions
+    std::cout << "\n================================\n";
+    std::cout << "        BATTLE START!\n";
+    std::cout << "================================\n";
+    std::cout << "Get ready for combat!\n";
+    std::cout << "Fighters will take turns attacking.\n";
+    std::cout << "Reduce your opponent's health to zero to win!\n";
+    std::cout << "================================\n\n";
+
     // Create two fighters
     Fighter player("Warrior", 100, 20, 10);
     Fighter enemy("Knight", 100, 15, 5);
@@ -85,9 +154,21 @@ void Game::StartGame()
     // Continue until one fighter is defeated
     while (!player.IsDefeated() && !enemy.IsDefeated())
     {
-        // Display current turn
-        std::cout << "Turn "
+        // UPDATED: Display turn number and active fighter
+        std::cout << "\n================================\n";
+        std::cout << "            TURN "
             << combat.GetTurnNumber() << "\n";
+
+        if (combat.GetTurnNumber() % 2 == 1)
+        {
+            std::cout << "         PLAYER'S TURN\n";
+        }
+        else
+        {
+            std::cout << "          ENEMY'S TURN\n";
+        }
+
+        std::cout << "================================\n";
 
         // Alternate attacks
 
@@ -172,7 +253,8 @@ void Game::StartGame()
         std::cout << enemy.GetName() << " wins!\n";
     }
 
-    std::cout << "\nReturning to main menu...\n";
+    // UPDATED: Display a message when the battle finishes
+    std::cout << "\nThe battle has ended!\n";
 }
 
 
