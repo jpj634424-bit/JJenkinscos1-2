@@ -84,6 +84,15 @@ void Game::Run()
 // NEW: Starts a combat match
 void Game::StartGame()
 {
+    // Display battle instructions
+    std::cout << "\n================================\n";
+    std::cout << "        BATTLE START!\n";
+    std::cout << "================================\n";
+    std::cout << "Get ready for combat!\n";
+    std::cout << "Fighters will take turns attacking.\n";
+    std::cout << "Reduce your opponent's health to zero to win!\n";
+    std::cout << "================================\n\n";
+
     // Create two fighters
     Fighter player("Warrior", 100, 20, 10);
     Fighter enemy("Knight", 100, 15, 5);
@@ -96,9 +105,21 @@ void Game::StartGame()
     // Continue until one fighter is defeated
     while (!player.IsDefeated() && !enemy.IsDefeated())
     {
-        // Display current turn
-        std::cout << "Turn "
+        // UPDATED: Display turn number and active fighter
+        std::cout << "\n================================\n";
+        std::cout << "            TURN "
             << combat.GetTurnNumber() << "\n";
+
+        if (combat.GetTurnNumber() % 2 == 1)
+        {
+            std::cout << "         PLAYER'S TURN\n";
+        }
+        else
+        {
+            std::cout << "          ENEMY'S TURN\n";
+        }
+
+        std::cout << "================================\n";
 
         // Alternate attacks
 
