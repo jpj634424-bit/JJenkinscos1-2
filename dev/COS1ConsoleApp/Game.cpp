@@ -269,24 +269,9 @@ void Game::StartGame()
             combat.NextTurn();
         }
     }
-
-    // Announce the winner
-    std::cout << "=== Combat Over ===\n";
-
-    if (enemy.IsDefeated())
-    {
-        std::cout << player.GetName() << " wins!\n";
-    }
-    else
-    {
-        std::cout << enemy.GetName() << " wins!\n";
-    }
-
-    // UPDATED: Display a message when the battle finishes
-    std::cout << "\nThe battle has ended!\n";
+    // UPDATED: Display battle results using a separate function
+    ShowBattleResults(player, enemy);
 }
-
-
 
 
 void Game::ShowCombatMenu(const Fighter& player, const Fighter& enemy)
@@ -312,3 +297,38 @@ void Game::ShowCombatMenu(const Fighter& player, const Fighter& enemy)
     std::cout << "Enter your choice: ";
 }
 
+// NEW: Display the results of a completed battle
+void Game::ShowBattleResults(const Fighter& player, const Fighter& enemy)
+{
+    // Display battle results heading
+    std::cout << "\n================================\n";
+    std::cout << "         BATTLE RESULTS         \n";
+    std::cout << "================================\n";
+
+    // Announce the winner
+    if (enemy.IsDefeated())
+    {
+        std::cout << "\n*** VICTORY! ***\n";
+        std::cout << player.GetName() << " wins!\n";
+        std::cout << "You defeated "
+            << enemy.GetName() << "!\n";
+    }
+    else
+    {
+        std::cout << "\n*** DEFEAT! ***\n";
+        std::cout << enemy.GetName() << " wins!\n";
+        std::cout << "You were defeated by "
+            << enemy.GetName() << ".\n";
+    }
+
+    // Display both fighters' remaining health
+    std::cout << "\n--- FINAL HEALTH ---\n";
+
+    std::cout << player.GetName() << " HP: "
+        << player.GetHealth() << "\n";
+
+    std::cout << enemy.GetName() << " HP: "
+        << enemy.GetHealth() << "\n";
+
+    std::cout << "\nThe battle has ended!\n";
+}
