@@ -11,14 +11,13 @@ CombatSystem::CombatSystem()
 
 void CombatSystem::Attack(Fighter& attacker, Fighter& defender)
 {
-    // Calculate damage
-    int damage = attacker.GetAttackPower() - defender.GetDefense();
+    // Calculate damage using the helper function
+    int damage = CalculateDamage(attacker, defender);
 
-    // Prevent negative damage
-    if (damage < 0)
-    {
-        damage = 0;
-    }
+    // NEW: Announce the attack before calculating defense
+    std::cout << "\n=== ATTACK ===\n";
+    std::cout << attacker.GetName() << " attacks "
+        << defender.GetName() << "!\n";
 
     // NEW: Check whether the defender is defending
     if (defender.IsDefending())
@@ -37,8 +36,6 @@ void CombatSystem::Attack(Fighter& attacker, Fighter& defender)
     defender.TakeDamage(damage);
 
     // Display attack information
-    std::cout << attacker.GetName() << " attacks "
-        << defender.GetName() << "!\n";
 
     std::cout << defender.GetName() << " takes "
         << damage << " damage!\n";
@@ -48,6 +45,20 @@ void CombatSystem::Attack(Fighter& attacker, Fighter& defender)
         << " health remaining.\n";
 }
 
+int CombatSystem::CalculateDamage(Fighter& attacker, Fighter& defender)
+{
+    // Calculate damage based on attack and defense
+    int damage = attacker.GetAttackPower() - defender.GetDefense();
+
+    // Prevent damage from becoming negative
+    if (damage < 0)
+    {
+        damage = 0;
+    }
+
+    // Return the calculated damage
+    return damage;
+}
 
 // NEW: Returns the current turn number
 int CombatSystem::GetTurnNumber() const
