@@ -5,6 +5,7 @@ class Game
 {
 private:
     bool isRunning;
+    void ShowBattleResults(const Fighter& player, const Fighter& enemy);
 
 public:
     // Constructor

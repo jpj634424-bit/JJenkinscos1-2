@@ -6,6 +6,7 @@ class CombatSystem
 {
 private:
     int turnNumber;
+    static int CalculateDamage(Fighter& attacker, Fighter& defender);
 
 public:
     CombatSystem();
