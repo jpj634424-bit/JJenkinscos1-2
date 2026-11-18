@@ -137,13 +137,29 @@ void Game::Run()
                 }
             }
 
-        else if (choice == "2")
-        {
-            std::cout << "\n=== HOW TO PLAY ===\n";
-            std::cout << "Your fighter battles against an enemy.\n";
-            std::cout << "Fighters take turns attacking.\n";
-            std::cout << "Reduce your opponent's health to zero to win!\n";
-        }
+            else if (choice == "2")
+            {
+                // UPDATED: Display complete gameplay instructions
+                std::cout << "\n================================\n";
+                std::cout << "          HOW TO PLAY           \n";
+                std::cout << "================================\n";
+                std::cout << "Your fighter battles against an enemy.\n";
+                std::cout << "Players and enemies take turns.\n\n";
+
+                std::cout << "COMBAT ACTIONS:\n";
+                std::cout << "1 or A - Attack your opponent.\n";
+                std::cout << "2 or D - Defend against the next attack.\n\n";
+
+                std::cout << "DEFENDING:\n";
+                std::cout << "Defending reduces incoming damage by 50%.\n";
+                std::cout << "Your defensive stance ends after an attack.\n\n";
+
+                std::cout << "WINNING:\n";
+                std::cout << "Reduce your opponent's health to zero to win!\n";
+                std::cout << "View the battle results after each match.\n";
+                std::cout << "You can choose to play again after a battle.\n";
+                std::cout << "================================\n";
+            }
         else if (choice == "3")
         {
             std::cout << "\nThanks for playing Console Fighter!\n";
