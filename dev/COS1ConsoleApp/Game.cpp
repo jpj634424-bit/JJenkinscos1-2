@@ -5,6 +5,27 @@
 #include <iostream>
 #include <string> // NEW: Allows us to store menu input
 
+// NEW: Reusable function for removing extra spaces
+namespace
+{
+    std::string TrimInput(const std::string& input)
+    {
+        // Find the first character that is not a space or tab
+        size_t first = input.find_first_not_of(" \t");
+
+        if (first == std::string::npos)
+        {
+            return "";
+        }
+
+        // Find the last character that is not a space or tab
+        size_t last = input.find_last_not_of(" \t");
+
+        // Return the input without extra spaces
+        return input.substr(first, last - first + 1);
+    }
+}
+
 // Game constructor
 Game::Game()
 {
@@ -45,6 +66,8 @@ void Game::Run()
             break;
         }
 
+        // NEW: Remove extra spaces from main menu input
+        choice = TrimInput(choice);
         
             // Check if the player entered nothing
             if (choice.empty())
@@ -90,6 +113,10 @@ void Game::Run()
                             playAgain = false;
                             break;
                         }
+
+                        // NEW: Remove extra spaces from replay menu input
+                        replayChoice = TrimInput(replayChoice);
+
 
                         if (replayChoice == "1")
                         {
@@ -193,6 +220,8 @@ void Game::StartGame()
                     return;
                 }
 
+                // UPDATED: Use reusable input trimming function
+                action = TrimInput(action);
 
                 if (action == "1" || action == "A" || action == "a")
                 {
