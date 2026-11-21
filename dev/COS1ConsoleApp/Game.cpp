@@ -47,6 +47,7 @@ void Game::ShowMenu()
 }
 
 // NEW: Controls the main game loop
+
 void Game::Run()
 {
     std::string choice;
@@ -66,100 +67,104 @@ void Game::Run()
             break;
         }
 
-        // NEW: Remove extra spaces from main menu input
+        // Remove extra spaces from main menu input
         choice = TrimInput(choice);
-        
-            // Check if the player entered nothing
-            if (choice.empty())
-            {
-                std::cout << "\nYou did not enter a choice.\n";
-                std::cout << "Please enter 1, 2, or 3.\n";
-                continue;
-            }
-        
 
-            if (choice == "1")
-            {
-                // NEW: Allow players to replay battles
-                bool playAgain = true;
+        // Check for empty input
+        if (choice.empty())
+        {
+            std::cout << "\nYou did not enter a choice.\n";
+            std::cout << "Please enter 1, 2, or 3.\n";
+            continue;
+        }
 
-                while (playAgain && isRunning)
+        if (choice == "1")
+        {
+            // Allow players to replay battles
+            bool playAgain = true;
+
+            while (playAgain && isRunning)
+            {
+                bool battleCompleted = StartGame();
+
+                // Stop if input is unavailable
+                if (!std::cin)
                 {
-                    StartGame();
+                    isRunning = false;
+                    break;
+                }
 
-                    // Stop if input is unavailable
+                // Return to main menu if battle was canceled
+                if (!battleCompleted)
+                {
+                    break;
+                }
+
+                std::string replayChoice;
+
+                // Ask until the player enters a valid option
+                while (true)
+                {
+                    std::cout << "\n=== BATTLE COMPLETE ===\n";
+                    std::cout << "Would you like to fight again?\n";
+                    std::cout << "1. Play Again\n";
+                    std::cout << "2. Return to Main Menu\n";
+                    std::cout << "Enter your choice: ";
+
+                    std::getline(std::cin, replayChoice);
+
                     if (!std::cin)
                     {
                         isRunning = false;
+                        playAgain = false;
                         break;
                     }
 
-                    std::string replayChoice;
+                    // Remove extra spaces from replay input
+                    replayChoice = TrimInput(replayChoice);
 
-                    // Ask until the player enters a valid option
-                    while (true)
+                    if (replayChoice == "1")
                     {
-                        std::cout << "\n=== BATTLE COMPLETE ===\n";
-                        std::cout << "Would you like to fight again?\n";
-                        std::cout << "1. Play Again\n";
-                        std::cout << "2. Return to Main Menu\n";
-                        std::cout << "Enter your choice: ";
-
-                        std::getline(std::cin, replayChoice);
-
-                        if (!std::cin)
-                        {
-                            isRunning = false;
-                            playAgain = false;
-                            break;
-                        }
-
-                        // NEW: Remove extra spaces from replay menu input
-                        replayChoice = TrimInput(replayChoice);
-
-
-                        if (replayChoice == "1")
-                        {
-                            // Start another battle
-                            break;
-                        }
-                        else if (replayChoice == "2")
-                        {
-                            // Stop replaying battles
-                            playAgain = false;
-                            break;
-                        }
-                        else
-                        {
-                            std::cout << "\nInvalid choice! Enter 1 or 2.\n";
-                        }
+                        // Start another battle
+                        break;
+                    }
+                    else if (replayChoice == "2")
+                    {
+                        // Stop replaying battles
+                        playAgain = false;
+                        break;
+                    }
+                    else
+                    {
+                        std::cout << "\nInvalid choice! Enter 1 or 2.\n";
                     }
                 }
             }
+        }
+        else if (choice == "2")
+        {
+            // Display gameplay instructions
+            std::cout << "\n================================\n";
+            std::cout << "          HOW TO PLAY           \n";
+            std::cout << "================================\n";
+            std::cout << "Your fighter battles against an enemy.\n";
+            std::cout << "Players and enemies take turns.\n\n";
 
-            else if (choice == "2")
-            {
-                // UPDATED: Display complete gameplay instructions
-                std::cout << "\n================================\n";
-                std::cout << "          HOW TO PLAY           \n";
-                std::cout << "================================\n";
-                std::cout << "Your fighter battles against an enemy.\n";
-                std::cout << "Players and enemies take turns.\n\n";
+            std::cout << "COMBAT ACTIONS:\n";
+            std::cout << "1 or A - Attack your opponent.\n";
+            std::cout << "2 or D - Defend against the next attack.\n";
+            std::cout << "3 or M - Leave battle and return to the main menu.\n\n";
 
-                std::cout << "COMBAT ACTIONS:\n";
-                std::cout << "1 or A - Attack your opponent.\n";
-                std::cout << "2 or D - Defend against the next attack.\n\n";
+            std::cout << "DEFENDING:\n";
+            std::cout << "Defending reduces incoming damage by 50%.\n";
+            std::cout << "Your defensive stance ends after an attack.\n\n";
 
-                std::cout << "DEFENDING:\n";
-                std::cout << "Defending reduces incoming damage by 50%.\n";
-                std::cout << "Your defensive stance ends after an attack.\n\n";
-
-                std::cout << "WINNING:\n";
-                std::cout << "Reduce your opponent's health to zero to win!\n";
-                std::cout << "View the battle results after each match.\n";
-                std::cout << "You can choose to play again after a battle.\n";
-                std::cout << "================================\n";
-            }
+            std::cout << "WINNING:\n";
+            std::cout << "Reduce your opponent's health to zero to win!\n";
+            std::cout << "View the battle results after each match.\n";
+            std::cout << "You can choose to play again after a battle.\n";
+            std::cout << "================================\n";
+        }
         else if (choice == "3")
         {
             std::cout << "\nThanks for playing Console Fighter!\n";
@@ -173,8 +178,10 @@ void Game::Run()
     }
 }
 
+// Starts a combat match
+
 // NEW: Starts a combat match
-void Game::StartGame()
+bool Game::StartGame()
 {
     // Display battle instructions
     std::cout << "\n================================\n";
@@ -233,7 +240,7 @@ void Game::StartGame()
                 if (!std::cin)
                 {
                     std::cout << "\nEnding match.\n";
-                    return;
+                    return false;
                 }
 
                 // UPDATED: Use reusable input trimming function
@@ -255,17 +262,29 @@ void Game::StartGame()
 
                     validAction = true;
                 }
+
+                else if (action == "3" || action == "M" || action == "m")
+                {
+                    // Allow the player to leave the current battle
+                    std::cout << "\nLeaving battle...\n";
+                    std::cout << "Returning to the main menu.\n";
+
+                    return false;
+                }
+
                 else if (action.empty())
                 {
                     // NEW: Handle empty input
                     std::cout << "\nYou must enter a choice.\n";
                 }
+
                 else
                 {
-                    // NEW: Explain the available choices
+                    // Explain the available combat choices
                     std::cout << "\nInvalid choice!\n";
                     std::cout << "Enter 1 or A to Attack.\n";
                     std::cout << "Enter 2 or D to Defend.\n";
+                    std::cout << "Enter 3 or M to Return to Main Menu.\n";
                 }
 
             }
@@ -287,6 +306,9 @@ void Game::StartGame()
     }
     // UPDATED: Display battle results using a separate function
     ShowBattleResults(player, enemy);
+    // NEW: Tell the game that the battle finished normally
+    return true;
+
 }
 
 
@@ -306,13 +328,20 @@ void Game::ShowCombatMenu(const Fighter& player, const Fighter& enemy)
 
     std::cout << "================================\n";
 
+
     // Combat actions
     std::cout << "1. Attack (A)\n";
     std::cout << "2. Defend (D)\n";
+
+    // NEW: Allow players to return to the main menu
+
+    std::cout << "3. Return to Main Menu (M)\n";
+
     std::cout << "================================\n";
     std::cout << "Enter your choice: ";
-}
 
+
+}
 // NEW: Display the results of a completed battle
 void Game::ShowBattleResults(const Fighter& player, const Fighter& enemy)
 {

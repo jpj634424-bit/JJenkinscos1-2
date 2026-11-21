@@ -17,8 +17,9 @@ public:
     // Displays the main menu
     void ShowMenu();
 
-    // Starts a combat match
-    void StartGame();
+    // UPDATED: Returns true if the battle finishes,
+     // or false if the player leaves early
+    bool StartGame();
 
     // UPDATED: Displays fighter information and combat options
     void ShowCombatMenu(const Fighter& player, const Fighter& enemy);
