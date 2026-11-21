@@ -32,6 +32,12 @@ void CombatSystem::Attack(Fighter& attacker, Fighter& defender)
         defender.StopDefending();
     }
 
+    // Limit damage to the defender's remaining health
+    if (damage > defender.GetHealth())
+    {
+        damage = defender.GetHealth();
+    }
+
     // Apply damage to the defender
     defender.TakeDamage(damage);
 
