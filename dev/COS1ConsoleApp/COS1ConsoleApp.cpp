@@ -3,11 +3,11 @@
 
 int main()
 {
-    // Create the game object
-    Game game;
+	// Create the game object
+	Game game;
 
-    // Start the main game loop
-    game.Run();
+	// Start the main game loop
+	game.Run();
 
-    return 0;
+	return 0;
 }

@@ -10,7 +10,7 @@ private:
     int attackPower;
     int defense;
 
-    // NEW: Tracks whether the fighter is defending
+    // Tracks whether the fighter is defending
     bool isDefending;
 
 public:
@@ -30,12 +30,12 @@ public:
     // Check if defeated
     bool IsDefeated() const;
 
-    // NEW: Activates defensive stance
+    // Activates defensive stance
     void Defend();
 
-    // NEW: Checks if fighter is defending
+    // Checks if fighter is defending
     bool IsDefending() const;
 
-    // NEW: Ends defensive stance
+    // Ends defensive stance
     void StopDefending();
 };
