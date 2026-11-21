@@ -5,18 +5,20 @@
 class CombatSystem
 {
 private:
-    int turnNumber;
-    static int CalculateDamage(Fighter& attacker, Fighter& defender);
+	int turnNumber;
+
+	static int CalculateDamage(const Fighter& attacker, const Fighter& defender);
+
 
 public:
-    CombatSystem();
+	CombatSystem();
 
-    // Handles attacks between fighters
-    void Attack(Fighter& attacker, Fighter& defender);
+	// Handles attacks between fighters
+	void Attack(Fighter& attacker, Fighter& defender);
 
-    // NEW: Returns the current turn number
-    int GetTurnNumber() const;
+	// Returns the current turn number
+	int GetTurnNumber() const;
 
-    // NEW: Advances to the next turn
-    void NextTurn();
+	// Advances to the next turn
+	void NextTurn();
 };
